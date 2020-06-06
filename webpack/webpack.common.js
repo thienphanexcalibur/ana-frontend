@@ -1,9 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
+
 const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractText = require('mini-css-extract-plugin');
-
+const paths = require('./paths.js');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 const isProd = process.env.mode === 'production';
 
 // console.log(path);
@@ -13,12 +15,17 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__dirname, '../build'),
-		filename: isProd ? '[name].[hash:8].js' : '[name].js'
+		filename: isProd ? '[name].[hash:8].js' : '[name].js',
+		chunkFilename: '[name].chunk.js'
 	},
 	plugins: [
 		new MiniCssExtractText(),
 		new webpack.DefinePlugin({
 			DEV: process.env.mode === 'development',
+		}),
+		new HTMLWebpackPlugin({
+			template: path.resolve(__dirname, '../template/index.html'),
+			filename: 'index.html',
 		}),
 		new Analyzer({
 			openAnalyzer: false,
@@ -27,8 +34,7 @@ module.exports = {
 		new CleanWebpackPlugin(),
 	],
 	resolve: {
-		alias: {
-		}
+		alias: paths
 	},
 	module: {
 		rules: [
@@ -42,8 +48,8 @@ module.exports = {
 				use: {
 					loader: 'url-loader',
 					options: {
-						limit: false,
-						name: '[name].[hash:8].[ext]',
+						limit: 10000,
+						name: 'static/[name].[hash:8].[ext]',
 					},
 				},
 			},
@@ -52,15 +58,32 @@ module.exports = {
 				use: {
 					loader: 'svg-url-loader',
 					options: {
-						limit: false,
-						name: '[name].[hash:8].[ext]',
+						limit: 10000,
+						name: 'static/[name].[hash:8].[ext]',
 						fallback: 'file-loader',
 					},
 				},
 			},
 
 			{
-				test: /\.(styl|css)$/,
+				test: /\.css$/,
+				use: [
+					{
+						loader: MiniCssExtractText.loader
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: !isProd,
+							localsConvention: 'asIs',
+							importLoaders: 1,
+						},
+					},
+				],
+			},
+
+			{
+				test: /\.styl$/,
 				use: [
 					{
 						loader: MiniCssExtractText.loader
