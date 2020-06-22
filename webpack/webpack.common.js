@@ -21,7 +21,7 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractText(),
 		new webpack.DefinePlugin({
-			DEV: process.env.mode === 'development',
+			_DEV_: process.env.mode === 'development'
 		}),
 		new HTMLWebpackPlugin({
 			template: path.resolve(__dirname, '../template/index.html'),

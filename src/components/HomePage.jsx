@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Header, Segment } from 'semantic-ui-react';
 import req from '@utils/request.js';
-
+import { connect } from 'react-redux';
+import {getAuth} from '@/store/actions.js';
 
 const Post = (props) => <Segment>
     <Header> {props.title} </Header>
@@ -9,7 +10,7 @@ const Post = (props) => <Segment>
     <p>{props.byUser?.fullname}</p>
 </Segment>
 
-export default class HomePage extends React.Component{
+class HomePage extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -44,3 +45,6 @@ export default class HomePage extends React.Component{
 
     }
 }
+
+
+export default connect()(HomePage);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Image, Loader } from 'semantic-ui-react';
 
 const menu = [
     {
@@ -19,14 +19,31 @@ const menu = [
     }
 ];
 
+const MenuItem = () => menu.map(item => <Menu.Item key={item.key}>{item.name}</Menu.Item>);
+
 export default class Navigation extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        const { user } = this.props;
         return (
-            <Menu items={menu}/>
+            <Menu>
+                <MenuItem/>
+                <Menu.Menu position="right">
+                    {user ?
+                        <Menu.Item>
+                            <span>Hi, {user.username}!</span>
+                            <Image 
+                                avatar={true} 
+                                size="mini"
+                                src={`https://robohash.org/${user._id}.png`}
+                            />
+                        </Menu.Item>
+                        : <Loader active inline/> }
+                </Menu.Menu>
+            </Menu>
         );
     }
 }

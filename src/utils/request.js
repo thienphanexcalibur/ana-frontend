@@ -13,15 +13,25 @@ export default {
     },
 
     post(path, payload) {
-        return f(path, {
+        const options = {
             body: payload,
+            credentials: 'include',
             method: 'POST'
-        })
+        }
+        
+        if (!payload) {
+            delete options.body
+        }
+
+        return f(path, options)
     },
 
     put(path, payload) {
         return f(path, {
             body: payload,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             method: 'PUT'
         })
     },
