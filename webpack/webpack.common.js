@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractText = require('mini-css-extract-plugin');
 const paths = require('./paths.js');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+
 const isProd = process.env.mode === 'production';
 
 // console.log(path);
@@ -23,6 +24,9 @@ module.exports = {
 		new webpack.DefinePlugin({
 			_DEV_: process.env.mode === 'development'
 		}),
+		new webpack.ProvidePlugin({
+			React: 'react'
+		}),
 		new HTMLWebpackPlugin({
 			template: path.resolve(__dirname, '../template/index.html'),
 			filename: 'index.html',
@@ -39,9 +43,9 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(jsx|js)$/,
+				test: /\.(js|jsx)$/,
 				use: 'babel-loader',
-				exclude: /node_modules/,
+				exclude: /node_modules/
 			},
 			{
 				test: /\.(ico|jpg|jpeg|png|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,

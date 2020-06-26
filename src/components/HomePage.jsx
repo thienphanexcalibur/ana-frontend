@@ -1,50 +1,69 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { Header, Segment } from 'semantic-ui-react';
 import req from '@utils/request.js';
 import { connect } from 'react-redux';
-import {getAuth} from '@/store/actions.js';
+import propTypes from 'prop-types';
 
-const Post = (props) => <Segment>
-    <Header> {props.title} </Header>
-    <p>{props.content}</p>
-    <p>{props.byUser?.fullname}</p>
-</Segment>
+const Post = (props) => {
+	const {
+		title,
+		content,
+		byUser
+	} = props;
+	return (
+		<Segment>
+			<Header>
+				{title}
+			</Header>
+			<p>{content}</p>
+			<p>{byUser?.fullname}</p>
+		</Segment>
+	);
+};
 
-class HomePage extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            posts: [],
-            error: false
-        }
-    }
+Post.propTypes = {
+	title: propTypes.string,
+	content: propTypes.string,
+	byUser: propTypes.shape({
+		fullname: propTypes.string
+	})
+};
 
-    componentDidMount() {
-        req.get('/post').then(
-            res => this.setState({posts: res})
-        );
-    }
+class HomePage extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			posts: [],
+			error: false
+		};
+	}
 
-    componentDidCatch(e) {
-        this.setState({error: true})
-    }
+	componentDidMount() {
+		req.get('/post').then(
+			(res) => this.setState({ posts: res })
+		);
+	}
 
-    render() {
-        const { posts, error } = this.state;
-        return (
-            <>
+	componentDidCatch(e) {
+		this.setState({ error: true });
+		console.log(e);
+	}
 
-            {!error ?  posts.map(post => <Post
-                key={post._id}
-                title={post.title}
-                content={post.content}
-                byUser={post.byUser}
-                />) : <div>Error</div>}
-            </>
-        )
-
-    }
+	render() {
+		const { posts, error } = this.state;
+		return (
+			<>
+				{!error ? posts.map((post) => (
+					<Post
+						key={post._id}
+						title={post.title}
+						content={post.content}
+						byUser={post.byUser}
+					/>
+				)) : <div>Error</div>}
+			</>
+		);
+	}
 }
-
 
 export default connect()(HomePage);

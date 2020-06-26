@@ -2,7 +2,9 @@ import {endpoint} from '@constants';
 
 function f (path, options) {
     const _e = endpoint;
-    return fetch(`${_e}${path}`, options).then(res => res.json());
+    return new Promise((resolve, reject) => {
+        fetch(`${_e}${path}`, options).then(res => resolve(res.json())).catch(e => reject(e))
+    });
 }
 
 export default {

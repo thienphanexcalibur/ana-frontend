@@ -7,7 +7,12 @@ import req from '@utils/request.js';
 
 function getAuth () {
     return async (dispatch) => {
-        const auth = await req.post('/auth');
+        let auth;
+        try {
+            auth = await req.post('/auth');
+        } catch(e) {
+            auth = null;
+        }
         dispatch(_(authType.GET_AUTH, auth));
     };
 }
