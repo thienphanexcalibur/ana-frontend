@@ -4,8 +4,8 @@ const path = require('path');
 const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractText = require('mini-css-extract-plugin');
-const paths = require('./paths.js');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const paths = require('./paths.js');
 
 const isProd = process.env.mode === 'production';
 
@@ -38,6 +38,7 @@ module.exports = {
 		new CleanWebpackPlugin(),
 	],
 	resolve: {
+		extensions: ['.js', '.jsx'],
 		alias: paths
 	},
 	module: {

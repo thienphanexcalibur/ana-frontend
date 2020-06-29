@@ -1,17 +1,17 @@
-function createType (type, payload){
-    return {
-        type,
-        payload
-    }
+function createType(type, payload) {
+	return {
+		type,
+		payload
+	};
 }
 
 const auth = {
-    'GET_AUTH': 'GET_AUTH'
-}
-
+	GET_AUTH: 'GET_AUTH',
+	SET_AUTH: 'SET_AUTH'
+};
 
 const post = {
-    'GET_POST': 'GET_POST'
-}
+	GET_POST: 'GET_POST'
+};
 
-export {auth, post, createType};
+export { auth, post, createType };

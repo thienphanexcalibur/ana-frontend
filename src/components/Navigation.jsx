@@ -1,12 +1,14 @@
 import { Component } from 'react';
+import AuthModal from '@components/Modal/AuthModal.jsx';
+import CreatePostModal from '@components/Modal/CreatePostModal';
 import {
-	Menu, Image, Loader, Button
+	Menu, Image, Loader
 } from 'semantic-ui-react';
 import propTypes from 'prop-types';
 import isEmpty from '@utils/isEmpty.js';
+import { menu } from '@constants';
 
 // Types
-
 const UserPropTypes = propTypes.shape({
 	username: propTypes.string,
 	_id: propTypes.string,
@@ -15,25 +17,11 @@ const UserPropTypes = propTypes.shape({
 	posts: propTypes.array,
 });
 
-const menu = [
-	{
-		key: 'home',
-		active: true,
-		name: 'Home'
-	},
-	{
-		key: 'mypage',
-		active: false,
-		name: 'My Page'
-	},
-	{
-		key: 'settings',
-		active: false,
-		name: 'Preferences'
-	}
-];
-
-const LeftMenuItems = () => menu.map((item) => <Menu.Item key={item.key}>{item.name}</Menu.Item>);
+const LeftMenuItems = () => menu.top.map((item) => (
+	<Menu.Item key={item.key}>
+		{item.name}
+	</Menu.Item>
+));
 
 const RightMenuItems = (props) => {
 	const { loading, user } = props;
@@ -52,9 +40,10 @@ const RightMenuItems = (props) => {
 							size="mini"
 							src={`https://robohash.org/${user?._id}.png`}
 						/>
+						<CreatePostModal />
 					</Menu.Item>
 				)
-				: <Button primary>Login</Button> }
+				: <AuthModal />}
 			<Loader active={loading} inline />
 		</Menu.Menu>
 	);

@@ -30,6 +30,7 @@ module.exports = {
 		'react/react-in-jsx-scope': 0,
 		'import/no-unresolved': 0,
 		'import/extensions': 0,
+		'import/prefer-default-export': 0,
 		'no-useless-constructor': 0
 	}
 };

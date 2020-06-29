@@ -1,46 +1,49 @@
-import {endpoint} from '@constants';
+import { endpoint } from '@constants';
 
-function f (path, options) {
-    const _e = endpoint;
-    return new Promise((resolve, reject) => {
-        fetch(`${_e}${path}`, options).then(res => resolve(res.json())).catch(e => reject(e))
-    });
+function f(path, options) {
+	const _e = endpoint;
+	return new Promise((resolve, reject) => {
+		fetch(`${_e}${path}`, options).then((res) => resolve(res.json())).catch((e) => reject(e));
+	});
 }
 
 export default {
-    get(path) {
-        return f(path, {
-            method: 'GET'
-        })
-    },
+	get(path) {
+		return f(path, {
+			method: 'GET'
+		});
+	},
 
-    post(path, payload) {
-        const options = {
-            body: payload,
-            credentials: 'include',
-            method: 'POST'
-        }
-        
-        if (!payload) {
-            delete options.body
-        }
+	post(path, payload) {
+		const options = {
+			body: JSON.stringify(payload),
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		};
 
-        return f(path, options)
-    },
+		if (!payload) {
+			delete options.body;
+		}
 
-    put(path, payload) {
-        return f(path, {
-            body: payload,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT'
-        })
-    },
+		return f(path, options);
+	},
 
-    delete(path) {
-        return f(path, {
-            method: 'DELETE'
-        });
-    }
-}
+	put(path, payload) {
+		return f(path, {
+			body: payload,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'PUT'
+		});
+	},
+
+	delete(path) {
+		return f(path, {
+			method: 'DELETE'
+		});
+	}
+};
