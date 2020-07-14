@@ -7,9 +7,11 @@ module.exports = merge(common, {
 	devServer: {
 		host: '0.0.0.0',
 		port: '6900',
-		disableHostCheck: true,
-		hot: true,
 		inline: true,
-		historyApiFallback: true
+		hot: true,
+		disableHostCheck: true,
+		historyApiFallback: true,
+		progress: true,
+		publicPath: '/'
 	},
 });

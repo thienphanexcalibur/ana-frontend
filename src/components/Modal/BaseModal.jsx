@@ -3,17 +3,38 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 export default function BaseModal(props) {
-	const { header, content, trigger } = props;
+	const {
+		header,
+		content,
+		trigger,
+		actions,
+		closeIcon,
+		className
+	} = props;
 	return (
-		<Modal trigger={trigger}>
-			{header && (
-				<Modal.Header>
-					{header}
-				</Modal.Header>
-			)}
-			<Modal.Content>
-				{content}
-			</Modal.Content>
+		<Modal
+			className={className}
+			trigger={trigger}
+			closeIcon={closeIcon}
+		>
+			{header
+				&& (
+					<Modal.Header>
+						{header}
+					</Modal.Header>
+				)}
+			{content
+				&& (
+					<Modal.Content>
+						{content}
+					</Modal.Content>
+				)}
+			{actions
+				&& (
+					<Modal.Actions>
+						{actions}
+					</Modal.Actions>
+				)}
 		</Modal>
 	);
 }
@@ -21,5 +42,8 @@ export default function BaseModal(props) {
 BaseModal.propTypes = {
 	header: propTypes.element,
 	content: propTypes.element,
-	trigger: propTypes.element
+	trigger: propTypes.element,
+	actions: propTypes.element,
+	className: propTypes.string,
+	closeIcon: propTypes.bool
 };

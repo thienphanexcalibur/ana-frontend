@@ -7,38 +7,31 @@ import {
 import propTypes from 'prop-types';
 import isEmpty from '@utils/isEmpty.js';
 import { menu } from '@constants';
-
-// Types
-const UserPropTypes = propTypes.shape({
-	username: propTypes.string,
-	_id: propTypes.string,
-	mobile: propTypes.string,
-	email: propTypes.string,
-	posts: propTypes.array,
-});
+import { connect } from 'react-redux';
+import { UserPropTypes } from '@/proptypes';
 
 const LeftMenuItems = () => menu.top.map((item) => (
-	<Menu.Item key={item.key}>
+	<Menu.Item as="a" key={item.key}>
 		{item.name}
 	</Menu.Item>
 ));
 
 const RightMenuItems = (props) => {
-	const { loading, user } = props;
+	const { loading, auth } = props;
 	return (
 		<Menu.Menu position="right">
-			{!isEmpty(user)
+			{!isEmpty(auth)
 				? (
 					<Menu.Item>
 						<span>
 							Hi,
-							{user?.username}
+							{auth?.username}
 							!
 						</span>
 						<Image
 							avatar
 							size="mini"
-							src={`https://robohash.org/${user?._id}.png`}
+							src={`https://robohash.org/${auth?._id}.png`}
 						/>
 						<CreatePostModal />
 					</Menu.Item>
@@ -51,38 +44,52 @@ const RightMenuItems = (props) => {
 
 RightMenuItems.propTypes = {
 	loading: propTypes.bool,
-	user: UserPropTypes
+	auth: UserPropTypes
 };
 
-export default class Navigation extends Component {
+class Navigation extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: true
+			loading: true,
+			auth: {}
 		};
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { user } = this.props;
-		if (nextProps.user !== user) {
-			this.setState({ loading: false });
+	static getDerivedStateFromProps(props, state) {
+		if (props.auth !== state.auth) {
+			return {
+				auth: props.auth,
+				loading: false
+			};
 		}
-		return true;
 	}
 
 	render() {
-		const { user } = this.props;
-		const { loading } = this.state;
+		const { loading, auth } = this.state;
 
 		return (
-			<Menu>
+			<Menu
+				borderless
+				secondary
+			>
 				<LeftMenuItems />
-				<RightMenuItems user={user} loading={loading} />
+				<RightMenuItems auth={auth} loading={loading} />
 			</Menu>
 		);
 	}
 }
 
-Navigation.propTypes = {
-	user: UserPropTypes
+Navigation.defaultProps = {
+	auth: {}
 };
+
+Navigation.propTypes = {
+	auth: UserPropTypes
+};
+
+const mapStateToProps = (state) => ({
+	auth: state.auth
+});
+
+export default connect(mapStateToProps, null)(Navigation);

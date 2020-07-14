@@ -1,17 +1,15 @@
-import { Container } from 'semantic-ui-react';
-import NavigationBar from '@components/Navigation.jsx';
-import HomePage from '@components/HomePage.jsx';
+import {
+	Container, Divider
+} from 'semantic-ui-react';
 import { Component } from 'react';
 import { getAuth } from '@/store/actions.js';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import NavigationBar from '@components/Navigation.jsx';
+import Routes from './routes';
 
 const mapDispatchToProps = (dispatch) => ({
 	getAuth: () => dispatch(getAuth())
-});
-
-const mapStateToProps = (state) => ({
-	auth: state.auth
 });
 
 class App extends Component {
@@ -24,19 +22,17 @@ class App extends Component {
 	}
 
 	render() {
-		const { auth } = this.props;
 		return (
-			<Container>
-				<NavigationBar user={auth} />
-				<HomePage />
+			<Container fluid>
+				<NavigationBar />
+				<Routes />
 			</Container>
 		);
 	}
 }
 
 App.propTypes = {
-	auth: PropTypes.shape({}),
 	getAuth: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

@@ -17,6 +17,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, '../build'),
 		filename: isProd ? '[name].[hash:8].js' : '[name].js',
+		publicPath: '/',
 		chunkFilename: '[name].chunk.js'
 	},
 	plugins: [

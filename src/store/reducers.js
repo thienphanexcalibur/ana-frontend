@@ -1,18 +1,44 @@
 import { combineReducers } from 'redux';
-import { auth as authActions } from './actionsType.js';
+import { connectRouter } from 'connected-react-router';
+import { auth as authActions, post as postActions } from './actionsType.js';
 
-function auth(state = null, action) {
-	switch (action.type) {
+function auth(state = {}, action) {
+	const { payload, type } = action;
+	switch (type) {
 		case authActions.GET_AUTH:
-			return ({ ...state, ...action.payload });
+			return ({ ...state, ...payload });
+		default:
+			return state;
+	}
+}
+
+function posts(state = [], action) {
+	const { payload, type } = action;
+	switch (type) {
+		case postActions.GET_ALL_POSTS: {
+			return payload;
 		}
-	return state;
+
+		default:
+			return state;
+	}
 }
 
-function post(state = [], action) {
+function postDetails(state = {}, action) {
+	const { payload, type } = action;
+	switch (type) {
+		case postActions.GET_POST_DETAILS: {
+			return payload;
+		}
 
+		default:
+			return state;
+	}
 }
 
-export default combineReducers({
-	auth
+export default (history) => combineReducers({
+	auth,
+	posts,
+	postDetails,
+	router: connectRouter(history)
 });

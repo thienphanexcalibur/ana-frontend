@@ -11,7 +11,16 @@ const auth = {
 };
 
 const post = {
-	GET_POST: 'GET_POST'
+	GET_ALL_POSTS: 'GET_ALL_POSTS',
+	GET_POST_DETAILS: 'GET_POST_DETAILS',
+	ADD_POST: 'ADD_POST'
 };
 
-export { auth, post, createType };
+const comment = {
+	ADD_COMMENT: 'ADD_COMMENT'
+};
+
+export { createType };
+
+// Export action types here
+export { auth, post, comment };
