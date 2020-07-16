@@ -10,4 +10,4 @@ export const PostPropTypes = propTypes.shape({
 	comments: propTypes.oneOfType([propTypes.arrayOf(CommentPropTypes), propTypes.array]),
 	updated_date: propTypes.string,
 	created_date: propTypes.string
-});
+}).isRequired;

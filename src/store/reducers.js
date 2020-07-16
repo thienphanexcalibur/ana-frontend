@@ -1,21 +1,35 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import { auth as authActions, post as postActions } from './actionsType.js';
+import { auth, post } from './actionsType.js';
 
-function auth(state = {}, action) {
+function authReducer(state = {}, action) {
 	const { payload, type } = action;
 	switch (type) {
-		case authActions.GET_AUTH:
+		case auth.SET_AUTH_SUCCESS:
 			return ({ ...state, ...payload });
+
+		case auth.SET_AUTH_ERROR:
+			return ({error: true});
+
+		case auth.GET_AUTH_SUCCESS:
+			return ({...state, ...payload});
+
+		case auth.GET_AUTH_ERROR:
+			return ({error: true});
+
 		default:
 			return state;
 	}
 }
 
-function posts(state = [], action) {
+function postsReducer(state = [], action) {
 	const { payload, type } = action;
 	switch (type) {
-		case postActions.GET_ALL_POSTS: {
+		case post.GET_ALL_POSTS_SUCCESS: {
+			return payload;
+		}
+
+		case post.GET_ALL_POSTS_ERROR: {
 			return payload;
 		}
 
@@ -24,21 +38,31 @@ function posts(state = [], action) {
 	}
 }
 
-function postDetails(state = {}, action) {
+function postDetailsReducer(state = {}, action) {
 	const { payload, type } = action;
 	switch (type) {
-		case postActions.GET_POST_DETAILS: {
+		case post.GET_POST_DETAILS_SUCCESS: {
+			return {...state, ...payload};
+		}
+
+		case post.GET_POST_DETAILS_ERROR: {
 			return payload;
 		}
 
 		default:
 			return state;
 	}
+}
+
+
+function commentReducer(state = [], action) {
+
+
 }
 
 export default (history) => combineReducers({
-	auth,
-	posts,
-	postDetails,
+	auth: authReducer,
+	posts: postsReducer,
+	postDetails: postDetailsReducer,
 	router: connectRouter(history)
 });

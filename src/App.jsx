@@ -3,6 +3,7 @@ import {
 } from 'semantic-ui-react';
 import { Component } from 'react';
 import { getAuth } from '@/store/actions.js';
+import {createType as _} from '@/store/actionsType';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NavigationBar from '@components/Navigation.jsx';
@@ -18,7 +19,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getAuth();
+		this.props.dispatch(_('GET_AUTH'));
 	}
 
 	render() {
@@ -35,4 +36,4 @@ App.propTypes = {
 	getAuth: PropTypes.func
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect()(App);

@@ -12,17 +12,11 @@ const logger = createLogger({});
 export const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory();
 
-// const customMiddleware = (store) => (next) => (action) => {
-// 	const result = next(action);
-// 	console.log(store.getState());
-// 	console.log(result, action);
-// };
-
 function configurableStore() {
 	return createStore(
 		reducer(history),
 		undefined,
-		compose(applyMiddleware(routerMiddleware(history), thunk, sagaMiddleware, logger), composeWithDevTools())
+		compose(applyMiddleware(sagaMiddleware, routerMiddleware(history), thunk, logger), composeWithDevTools())
 	);
 }
 

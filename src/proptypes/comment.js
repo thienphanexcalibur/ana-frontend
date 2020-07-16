@@ -10,4 +10,4 @@ export const CommentPropTypes = propTypes.shape({
 	post: propTypes.string,
 	liked: propTypes.number,
 	disliked: propTypes.number
-});
+}).isRequired;

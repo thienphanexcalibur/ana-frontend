@@ -3,6 +3,7 @@ import { useState } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { submitAuth as submitAuthAction } from '@/store/actions.js';
+import {createType as _} from '@/store/actionsType.js';
 import BaseModal from './BaseModal.jsx';
 
 const Content = (props) => {
@@ -73,7 +74,7 @@ AuthModal.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	submitAuth: ({ username, password }) => dispatch(submitAuthAction({ username, password }))
+	submitAuth: ({ username, password }) => dispatch(_('SUBMIT_AUTH', { username, password }))
 });
 
 export default connect(null, mapDispatchToProps)(AuthModal);
