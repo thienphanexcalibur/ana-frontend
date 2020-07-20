@@ -40,21 +40,12 @@ function getPostDetails(id) {
 	};
 }
 
+
 // Comment
 
 function addComment({ userID, content, postID }) {
-	return async (dispatch) => {
-		const result = await req.post('/comment/add', {
-			byUser: userID,
-			comment: content,
-			post: postID
-		});
-
-		dispatch(_(commentType.ADD_COMMENT), {
-			userID, content, postID
-		});
-
-		return result;
+	return (dispatch) => {
+		dispatch(_(commentType.ADD_COMMENT), {userID, content, postID});
 	};
 }
 

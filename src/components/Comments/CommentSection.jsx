@@ -28,6 +28,7 @@ const UserComments = ({ comments = [] }) => comments.map((_comment) => {
 		/>
 	);
 });
+
 UserComments.propTypes = {
 	comments: propTypes.oneOfType([propTypes.arrayOf(CommentPropTypes), propTypes.array])
 };
