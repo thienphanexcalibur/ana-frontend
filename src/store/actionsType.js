@@ -33,7 +33,9 @@ const post = {
 };
 
 const comment = {
-	ADD_COMMENT: 'ADD_COMMENT'
+	ADD_COMMENT: 'ADD_COMMENT',
+	ADD_COMMENT_SUCCESS: 'ADD_COMMENT_SUCCESS',
+	ADD_COMMENT_ERROR: 'ADD_COMMENT_ERROR'
 };
 
 export { createType };

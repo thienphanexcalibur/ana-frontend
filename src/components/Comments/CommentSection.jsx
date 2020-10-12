@@ -48,10 +48,6 @@ function CommentSection(props) {
 		setCommentString(e.target.value);
 	}
 
-	function _handleAddReply({ userID, content, postID }) {
-		_addComment({ userID, content, postID });
-	}
-
 	return (
 		<Comment.Group>
 			<Header as="h3" dividing>
@@ -63,7 +59,7 @@ function CommentSection(props) {
 			<Form reply>
 				<Form.TextArea onChange={_handleOnChangeTextArea} value={commentString} placeholder="Share your thoughts here" />
 				<Button
-					onClick={() => _handleAddReply({ userID: byUser, content: commentString, postID: _id })}
+					onClick={() => _addComment({ userID: byUser, content: commentString, postID: _id })}
 					content="Add Reply"
 					labelPosition="left"
 					icon="edit"

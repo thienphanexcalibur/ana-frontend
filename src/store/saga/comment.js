@@ -1,9 +1,9 @@
-import { all, takeLatest, call } from 'redux-saga/effects';
-import { comment, createType as _ } from '@/store/actionsType.js';
+import { all, takeLatest, call, put } from 'redux-saga/effects';
+import { comment, createType as _, post } from '@/store/actionsType.js';
 import req from '@utils/request.js';
 
 
-function* addComment(action) {
+export function* addComment(action) {
 	try {
 		const {
 			payload: {
@@ -20,6 +20,7 @@ function* addComment(action) {
 			});
 		if (result) {
 			yield put(_(comment.ADD_COMMENT_SUCCESS, result));
+			yield put(_(post.GET_POST_DETAILS, { id: postID }));
 		}
 	} catch(e) {
 		yield put(_(comment.ADD_COMMENT_ERROR, { error: true, message: e }));
