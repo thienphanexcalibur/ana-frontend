@@ -18,7 +18,7 @@ export default function Post({ title, content, liked, disliked }) {
 						fontSize="xs"
 						textTransform="uppercase"
 						ml="2"
-					></Box>
+					/>
 				</Box>
 
 				<Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
@@ -38,4 +38,3 @@ export default function Post({ title, content, liked, disliked }) {
 		</Box>
 	);
 }
-

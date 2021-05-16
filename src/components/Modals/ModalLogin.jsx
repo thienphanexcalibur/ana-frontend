@@ -1,8 +1,8 @@
-import { ButtonGroup } from '@chakra-ui/button';
-import { Button } from '@chakra-ui/button';
+import { ButtonGroup, Button } from '@chakra-ui/button';
+
 import { Input } from '@chakra-ui/input';
-import { Stack } from '@chakra-ui/layout';
-import { Text } from '@chakra-ui/layout';
+import { Stack, Text } from '@chakra-ui/layout';
+
 import {
 	Modal,
 	ModalBody,

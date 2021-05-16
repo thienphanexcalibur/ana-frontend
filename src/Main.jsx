@@ -1,21 +1,14 @@
-import { Avatar, AvatarGroup } from "@chakra-ui/avatar";
-import { Button } from "@chakra-ui/button";
-import { useDisclosure } from "@chakra-ui/hooks";
-import {
-	Box,
-	Container,
-	Flex,
-	Stack,
-	StackItem,
-	Text,
-} from "@chakra-ui/layout";
-import isEmpty from "lodash/isEmpty";
-import React, { useContext, useEffect } from "react";
-import { GET_AUTH, GET_POSTS, LOGOUT } from "./actions";
-import ErrorBoundary from "./components/ErrorBoundary";
-import ModalLogin from "./components/Modals/ModalLogin";
-import Post from "./components/Post";
-import { AppContext } from "./context";
+import { Avatar, AvatarGroup } from '@chakra-ui/avatar';
+import { Button } from '@chakra-ui/button';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { Box, Container, Flex, Stack, StackItem, Text } from '@chakra-ui/layout';
+import isEmpty from 'lodash/isEmpty';
+import React, { useContext, useEffect } from 'react';
+import { GET_AUTH, GET_POSTS, LOGOUT } from './actions';
+import ErrorBoundary from './components/ErrorBoundary';
+import ModalLogin from './components/Modals/ModalLogin';
+import Post from './components/Post';
+import { AppContext } from './context';
 
 const Posts = ({ posts }) => (
 	<Stack w="50%">

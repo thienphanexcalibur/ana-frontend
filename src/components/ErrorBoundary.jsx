@@ -1,18 +1,18 @@
-import { Text } from "@chakra-ui/layout";
-import React, { Component } from "react";
+import { Text } from '@chakra-ui/layout';
+import React, { Component } from 'react';
 
 export default class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			error: null,
+			error: null
 		};
 	}
 
 	componentDidCatch(e) {
 		this.setState({
 			error: {
-				message: e.message,
+				message: e.message
 			}
 		});
 	}

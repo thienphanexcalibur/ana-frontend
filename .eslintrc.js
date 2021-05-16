@@ -1,23 +1,18 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 12,
-    sourceType: 'module',
-  },
-  plugins: [
-    'react',
-  ],
-  rules: {
+	env: {
+		browser: true,
+		es2021: true
+	},
+	extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+	parserOptions: {
+		ecmaFeatures: {
+			jsx: true
+		},
+		ecmaVersion: 12,
+		sourceType: 'module'
+	},
+	plugins: ['react'],
+	rules: {
 		'global-require': 0,
 		'import/no-cycle': 0,
 		semi: [2, 'always'],
@@ -66,7 +61,7 @@ module.exports = {
 			}
 		],
 		'import/no-useless-path-segments': 0,
-		'no-plusplus': ['error', { allowForLoopAfterthoughts: true }]
+		'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+		'prefer-object-spread': 2
 	}
-  },
 };
