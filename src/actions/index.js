@@ -16,12 +16,24 @@ function createActionThunk(name, fn) {
 	};
 }
 
-export const GET_AUTH = createActionThunk('GET_AUTH', async () =>
-	fetch(`${process.env.API_PATH}/auth`, {
-		method: 'POST',
-		credentials: 'include'
-	}).then((res) => res.json())
-);
+export const GET_AUTH = createActionThunk('GET_AUTH', async ({ username, password }) => {
+	const payload = username && password ? { username, password } : null;
+
+	const requestOptions = Object.assign(
+		{
+			method: 'POST'
+		},
+		{
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		},
+		payload ? { body: JSON.stringify(payload) } : {}
+	);
+
+	return fetch(`${process.env.API_PATH}/auth`, requestOptions).then((res) => res.json());
+});
 
 export const SUBMIT_AUTH = createActionThunk(
 	'SUBMIT_AUTH',
