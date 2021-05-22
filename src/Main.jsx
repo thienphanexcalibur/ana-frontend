@@ -4,21 +4,11 @@ import { useDisclosure } from '@chakra-ui/hooks';
 import { Box, Container, Flex, Stack, StackItem, Text } from '@chakra-ui/layout';
 import isEmpty from 'lodash/isEmpty';
 import React, { useContext, useEffect } from 'react';
-import { GET_AUTH, GET_POSTS, LOGOUT } from './actions';
-import ErrorBoundary from './components/ErrorBoundary';
+import { BrowserRouter as Router, Link, Switch, useLocation } from 'react-router-dom';
+import { GET_AUTH, LOGOUT } from './actions';
 import ModalLogin from './components/Modals/ModalLogin';
-import Post from './components/Post';
 import { AppContext } from './context';
-
-const Posts = ({ posts }) => (
-	<Stack w="50%">
-		{posts.map((post) => (
-			<StackItem key={post._id}>
-				<Post {...post} />
-			</StackItem>
-		))}
-	</Stack>
-);
+import Routes from './routes';
 
 const RightSide = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,48 +32,62 @@ const RightSide = () => {
 	);
 };
 
+const LeftSide = () => {
+	const { state } = useContext(AppContext);
+	const { pathname } = useLocation();
+
+	return (
+		<Stack direction="column" spacing={10}>
+			<StackItem direction="column">
+				<AvatarGroup spacing={5}>
+					<Avatar name={state.auth?.username} />
+					<Text fontSize="sm" as="h3">
+						{state.auth?.username}
+					</Text>
+				</AvatarGroup>
+			</StackItem>
+
+			<StackItem>
+				<Text fontSize="sm" mb={3} fontWeight="bold" colorScheme="gray">
+					Section
+				</Text>
+				<Stack>
+					<Text
+						as={Link}
+						to="/wall"
+						fontWeight={pathname === '/wall' ? 'bold' : 'normal'}
+						fontSize="xs"
+					>
+						Walls
+					</Text>
+					<Text fontSize="xs">Settings</Text>
+				</Stack>
+			</StackItem>
+		</Stack>
+	);
+};
+
 const Main = () => {
-	const { state, dispatch } = useContext(AppContext);
+	const { dispatch } = useContext(AppContext);
 
 	useEffect(() => {
 		dispatch(GET_AUTH());
-		dispatch(GET_POSTS());
 	}, []);
 
-	useEffect(() => {
-		console.log(state.auth);
-	}, [state]);
-
 	return (
-		<Container maxW="100%" p={10}>
-			<Flex justifyContent="space-evenly">
-				<Stack direction="column" spacing={10}>
-					<StackItem direction="column">
-						<AvatarGroup spacing={5}>
-							<Avatar name="Thien Phan" />
-							<Text fontSize="sm">{state.auth?.username}</Text>
-						</AvatarGroup>
-					</StackItem>
-
-					<StackItem>
-						<Text fontSize="sm" mb={3} fontWeight="bold" colorScheme="gray">
-							Menu
-						</Text>
-						<Stack>
-							<Text fontSize="xs">Walls</Text>
-							<Text fontSize="xs">Settings</Text>
+		<Router>
+			<Switch>
+				<Container maxW="100%" p={10}>
+					<Flex justifyContent="space-evenly">
+						<LeftSide />
+						<Routes />
+						<Stack justifyContent="flex-start">
+							<RightSide />
 						</Stack>
-					</StackItem>
-				</Stack>
-
-				<ErrorBoundary>
-					<Posts posts={state.posts} />
-				</ErrorBoundary>
-				<Stack justifyContent="flex-start">
-					<RightSide />
-				</Stack>
-			</Flex>
-		</Container>
+					</Flex>
+				</Container>
+			</Switch>
+		</Router>
 	);
 };
 

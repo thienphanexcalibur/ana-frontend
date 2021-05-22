@@ -9,8 +9,8 @@ function reducer(state, action) {
 			return { ...state, auth: payload };
 		case 'SUBMIT_AUTH':
 			return { ...state, auth: payload };
-		case 'GET_POSTS':
-			return { ...state, posts: state.posts.concat(payload) };
+		case 'GET_WALL_POSTS':
+			return { ...state, posts: payload };
 		case 'LOGOUT':
 			return { ...state, auth: {} };
 		default:
@@ -26,7 +26,7 @@ const initialState = {
 export const AppContext = createContext({});
 
 const Provider = ({ children }) => {
-	const [state, dispatch] = useReducer(reducer, initialState, (state) => state, 'APP');
+	const [state, dispatch] = useReducer(reducer, initialState, (x) => x, 'APP');
 
 	const _wrapDispatch = useCallback((action) => {
 		if (typeof action === 'object') {
@@ -34,7 +34,7 @@ const Provider = ({ children }) => {
 			return action;
 		}
 		if (typeof action === 'function') {
-			const thunkResult = action({ dispatch, state });
+			const thunkResult = action({ dispatch: _wrapDispatch, state });
 			if (Object.prototype.toString.call(thunkResult) === '[object Promise]') {
 				return thunkResult
 					.then((x) => {
@@ -51,6 +51,7 @@ const Provider = ({ children }) => {
 				return actionWithPayload;
 			}
 		}
+		return action;
 	}, []);
 
 	return (

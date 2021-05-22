@@ -107,7 +107,7 @@ export default function ModalLogin({ isOpen, onClose }) {
 	};
 
 	return (
-		<Modal isOpen={isOpen} isCentered onClose={onModalClose} motionPreset="none">
+		<Modal isOpen={isOpen} isCentered onClose={onModalClose} motionPreset="scale">
 			<ModalOverlay />
 			<ModalContent>
 				<ModalCloseButton />
