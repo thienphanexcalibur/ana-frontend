@@ -3,7 +3,7 @@ module.exports = {
 		browser: true,
 		es2021: true
 	},
-	extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+	extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'airbnb', 'prettier'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true
@@ -28,7 +28,6 @@ module.exports = {
 		],
 		'template-curly-spacing': 'off',
 		'no-use-before-define': [0],
-		'no-unused-vars': 0,
 		'no-undef': 0,
 		'no-tabs': 0,
 		'no-console': 0,

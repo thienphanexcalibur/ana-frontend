@@ -1,21 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { Box, Stack, StackItem } from '@chakra-ui/react';
-import Post from '../../components/Post';
-import { AppContext } from '../../context';
-import ErrorBoundary from '../../components/ErrorBoundary';
-import { GET_WALL_POSTS } from '../../actions';
+import { Box, Stack } from '@chakra-ui/react';
+import { AppContext } from '$/context';
+import ErrorBoundary from '$/components/ErrorBoundary';
+import { GET_WALL_POSTS } from '$/actions';
 import Header from './Header';
 import CreatePostArea from './CreatePostArea';
-
-const Posts = ({ posts }) => (
-	<Stack w="100%">
-		{posts.map((post) => (
-			<StackItem key={post._id}>
-				<Post {...post} />
-			</StackItem>
-		))}
-	</Stack>
-);
+import Posts from './Posts';
 
 const Wall = () => {
 	const { state, dispatch } = useContext(AppContext);

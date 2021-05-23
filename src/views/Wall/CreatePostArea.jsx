@@ -1,14 +1,16 @@
+import React, { memo, useContext } from 'react';
 import { Button } from '@chakra-ui/button';
 import { AddIcon } from '@chakra-ui/icons';
 import { Input } from '@chakra-ui/input';
 import { Box, Flex, Text } from '@chakra-ui/layout';
-import React, { memo, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { AppContext } from '../../context';
+import { AppContext } from '$/context';
+import { ADD_POST } from '$/actions';
 
 export default memo(() => {
 	const { state, dispatch } = useContext(AppContext);
 	const { handleSubmit, register } = useForm();
+
 	const submit = ({ title, content }) => {
 		dispatch(
 			ADD_POST({
@@ -18,6 +20,7 @@ export default memo(() => {
 			})
 		);
 	};
+
 	return (
 		<Box border="1px" borderColor="gray.200" rounded="base" p={3}>
 			<Text colorScheme="gray" fontWeight="semibold" fontSize="xs">

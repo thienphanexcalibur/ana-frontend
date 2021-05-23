@@ -1,7 +1,3 @@
-import { createStandaloneToast } from '@chakra-ui/toast';
-
-const toast = createStandaloneToast();
-
 export function createAction(name, payload) {
 	return {
 		type: name,
@@ -40,28 +36,25 @@ export const GET_AUTH = createActionThunk('GET_AUTH', async ({ username, passwor
 	return fetch(API`/auth`, requestOptions).then((res) => res.json());
 });
 
-export const SUBMIT_AUTH = createActionThunk(
-	'SUBMIT_AUTH',
-	async ({ username, password }, { dispatch, state }) => {
-		try {
-			const result = await fetch(API`/auth/signup`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				credentials: 'include',
-				body: JSON.stringify({
-					username,
-					password
-				})
-			}).then((res) => res.json());
-			return result;
-		} catch (e) {
-			console.log(e);
-		}
-		return { username, password };
+export const SUBMIT_AUTH = createActionThunk('SUBMIT_AUTH', async ({ username, password }) => {
+	try {
+		const result = await fetch(API`/auth/signup`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				username,
+				password
+			})
+		}).then((res) => res.json());
+		return result;
+	} catch (e) {
+		console.log(e);
 	}
-);
+	return { username, password };
+});
 
 export const LOGOUT = createActionThunk('LOGOUT', () =>
 	fetch(API`/auth/logout`, {
@@ -95,4 +88,23 @@ export const ADD_POST = createActionThunk('ADD_POST', ({ title, content, byUser 
 	})
 		.then((res) => res.json())
 		.then(() => dispatch(GET_WALL_POSTS()))
+);
+
+export const ADD_COMMENT = createActionThunk('ADD_COMMENT', ({ comment, byUser, post }) =>
+	fetch(API`/comment/add`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			comment,
+			byUser,
+			post
+		}),
+		credentials: 'include'
+	}).then((res) => res.json())
+);
+
+export const GET_COMMENTS = createActionThunk('GET_COMMENTS', (postId) =>
+	fetch(API`/comment/post/${postId}`).then((res) => res.json())
 );

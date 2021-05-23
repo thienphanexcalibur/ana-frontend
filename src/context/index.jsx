@@ -1,6 +1,6 @@
 import React, { createContext, useCallback } from 'react';
 import { useReducer } from 'reinspect';
-import { createAction } from '../actions';
+import { createAction } from '$/actions';
 
 function reducer(state, action) {
 	const { type, payload } = action;
@@ -28,31 +28,34 @@ export const AppContext = createContext({});
 const Provider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState, (x) => x, 'APP');
 
-	const _wrapDispatch = useCallback((action) => {
-		if (typeof action === 'object') {
-			dispatch(action);
-			return action;
-		}
-		if (typeof action === 'function') {
-			const thunkResult = action({ dispatch: _wrapDispatch, state });
-			if (Object.prototype.toString.call(thunkResult) === '[object Promise]') {
-				return thunkResult
-					.then((x) => {
-						dispatch(createAction(action.name, x));
-						return x;
-					})
-					.catch((e) => {
-						dispatch(createAction(`${action.name}/ERROR`, { error: e.message }));
-					});
+	const _wrapDispatch = useCallback(
+		(action) => {
+			if (typeof action === 'object') {
+				dispatch(action);
+				return action;
 			}
-			if (Object.prototype.toString.call(thunkResult) === '[object Function]') {
-				const actionWithPayload = createAction(action.name, thunkResult);
-				dispatch(actionWithPayload);
-				return actionWithPayload;
+			if (typeof action === 'function') {
+				const thunkResult = action({ dispatch: _wrapDispatch, state });
+				if (Object.prototype.toString.call(thunkResult) === '[object Promise]') {
+					return thunkResult
+						.then((x) => {
+							dispatch(createAction(action.name, x));
+							return x;
+						})
+						.catch((e) => {
+							dispatch(createAction(`${action.name}/ERROR`, { error: e.message }));
+						});
+				}
+				if (Object.prototype.toString.call(thunkResult) === '[object Function]') {
+					const actionWithPayload = createAction(action.name, thunkResult);
+					dispatch(actionWithPayload);
+					return actionWithPayload;
+				}
+				return action;
 			}
-		}
-		return action;
-	}, []);
+		},
+		[state]
+	);
 
 	return (
 		<AppContext.Provider value={{ state, dispatch: _wrapDispatch }}>{children}</AppContext.Provider>

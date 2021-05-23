@@ -1,7 +1,7 @@
 import { ButtonGroup, Button } from '@chakra-ui/button';
 
 import { Input } from '@chakra-ui/input';
-import { Stack, Text } from '@chakra-ui/layout';
+import { Stack } from '@chakra-ui/layout';
 
 import {
 	Modal,
@@ -16,8 +16,8 @@ import { chakra } from '@chakra-ui/system';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useState } from 'reinspect';
-import { GET_AUTH, SUBMIT_AUTH } from '../../actions';
-import { AppContext } from '../../context';
+import { GET_AUTH, SUBMIT_AUTH } from '$/actions';
+import { AppContext } from '$/context';
 
 const LoginModalContent = ({ switchSignup }) => {
 	const { dispatch } = useContext(AppContext);

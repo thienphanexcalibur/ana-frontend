@@ -1,6 +1,10 @@
-import { Badge, Box, LinkBox, LinkOverlay } from '@chakra-ui/layout';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { Box, HStack, LinkBox, Text } from '@chakra-ui/layout';
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import { AiFillDislike, AiFillLike } from 'react-icons/ai';
+import { IconButton } from '@chakra-ui/button';
 
 // Sample card from Airbnb
 
@@ -8,12 +12,9 @@ export default function Post({ title, content, liked, disliked, _id }) {
 	const postId = _id;
 	return (
 		<LinkBox as={Link} to={`/post/${postId}`}>
-			<Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+			<Box overflow="hidden">
 				<Box p="6">
 					<Box d="flex" alignItems="baseline">
-						<Badge borderRadius="full" px="2" colorScheme="teal">
-							New
-						</Badge>
 						<Box
 							color="gray.500"
 							fontWeight="semibold"
@@ -24,19 +25,29 @@ export default function Post({ title, content, liked, disliked, _id }) {
 						/>
 					</Box>
 
-					<Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+					<Text mt="1" fontWeight="semibold" as="h3" fontSize="xl" lineHeight="tight" isTruncated>
 						{title}
-					</Box>
+					</Text>
 
-					<Box>
-						<Box as="span" color="gray.600" fontSize="sm">
-							{liked}
+					<Text isTruncated fontWeight="normal" color={useColorModeValue('gray.500')}>
+						{content}
+					</Text>
+
+					<HStack>
+						<Box>
+							<IconButton variant="ghost" icon={<AiFillLike />} />
+							<Text as="span" color="gray.600" fontSize="sm">
+								{liked}
+							</Text>
 						</Box>
 
-						<Box as="span" color="gray.600" fontSize="sm">
-							{disliked}
+						<Box>
+							<IconButton variant="ghost" icon={<AiFillDislike />} />
+							<Text as="span" color="gray.600" fontSize="sm">
+								{disliked}
+							</Text>
 						</Box>
-					</Box>
+					</HStack>
 				</Box>
 			</Box>
 		</LinkBox>

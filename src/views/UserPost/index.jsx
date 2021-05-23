@@ -1,12 +1,11 @@
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Heading, HStack, LinkBox, LinkOverlay, Stack, Text } from '@chakra-ui/layout';
-import { chakra } from '@chakra-ui/system';
-import React, { useContext, useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
-import { GET_POST } from '../../actions';
-import { AppContext } from '../../context';
+import { Box, Divider, Heading, Stack, Text } from '@chakra-ui/layout';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { GET_COMMENTS, GET_POST } from '$/actions';
+import { AppContext } from '$/context';
 import BreadCrumb from './BreadCrumb';
+import Comments from './Comments';
+import CreateCommentArea from './CreateCommentArea';
 
 const UserPost = () => {
 	const history = useHistory();
@@ -14,22 +13,29 @@ const UserPost = () => {
 	const { id } = useParams();
 	const [post, setPost] = useState({
 		title: '',
-		content: '',
-		comments: []
+		content: ''
 	});
 
-	const getPost = async (postID) => {
-		const postResult = await dispatch(GET_POST(postID));
-		setPost(postResult);
-	};
+	const [comments, setComments] = useState([]);
 
-	const goBack = () => {
+	const getPost = useCallback(async () => {
+		const postResult = await dispatch(GET_POST(id));
+		setPost(postResult);
+	}, [id]);
+
+	const getComments = useCallback(async () => {
+		const commentsResult = await dispatch(GET_COMMENTS(id));
+		setComments(commentsResult);
+	}, [id]);
+
+	const goBack = useCallback(() => {
 		history.goBack();
-	};
+	}, [history]);
 
 	useEffect(() => {
-		getPost(id);
-	}, []);
+		getPost();
+		getComments();
+	}, [id]);
 
 	return (
 		<Stack w="50%">
@@ -38,6 +44,11 @@ const UserPost = () => {
 			</Box>
 			<Heading>{post.title}</Heading>
 			<Text>{post.content}</Text>
+			<Box my={10}>
+				<Divider my={10} />
+			</Box>
+			<CreateCommentArea postId={id} onCommentCreated={getComments} />
+			<Comments comments={comments} />
 		</Stack>
 	);
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Wall from '../views/Wall';
-import UserPost from '../views/UserPost';
+import Wall from '$/views/Wall';
+import UserPost from '$/views/UserPost';
 
 const Routes = () => (
 	<>
