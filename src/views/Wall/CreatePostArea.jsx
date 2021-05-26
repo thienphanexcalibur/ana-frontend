@@ -1,44 +1,38 @@
 import React, { memo, useContext } from 'react';
-import { Button } from '@chakra-ui/button';
-import { AddIcon } from '@chakra-ui/icons';
-import { Input } from '@chakra-ui/input';
-import { Box, Flex, Text } from '@chakra-ui/layout';
-import { useForm } from 'react-hook-form';
-import { AppContext } from '$/context';
-import { ADD_POST } from '$/actions';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
+import { BsPencil } from 'react-icons/bs';
+import { useDisclosure } from '@chakra-ui/hooks';
+import isEmpty from 'lodash/isEmpty';
+import ModalWritePost from './ModalWritePost';
+import { AppContext } from '@/context';
+import { TOGGLE_MODAL } from '@/actions';
+import { MODAL_LOGIN } from '@/components/Modals/constants';
 
 export default memo(() => {
-	const { state, dispatch } = useContext(AppContext);
-	const { handleSubmit, register } = useForm();
+	const { isOpen, onClose, onOpen } = useDisclosure();
 
-	const submit = ({ title, content }) => {
-		dispatch(
-			ADD_POST({
-				title,
-				content,
-				byUser: state.auth._id
-			})
-		);
+	const { state, dispatch } = useContext(AppContext);
+
+	const openModalWritePost = () => {
+		if (isEmpty(state.auth)) {
+			dispatch(
+				TOGGLE_MODAL({
+					type: MODAL_LOGIN,
+					value: true
+				})
+			);
+			return;
+		}
+		onOpen();
 	};
 
 	return (
-		<Box border="1px" borderColor="gray.200" rounded="base" p={3}>
-			<Text colorScheme="gray" fontWeight="semibold" fontSize="xs">
-				Title
-			</Text>
-			<Input {...register('title')} variant="filled" />
-			<Input {...register('content')} variant="outline" />
-
-			<Flex justifyContent="flex-end">
-				<Button
-					variant="solid"
-					onClick={handleSubmit(submit)}
-					colorScheme="blue"
-					leftIcon={<AddIcon />}
-				>
-					Write
-				</Button>
-			</Flex>
-		</Box>
+		<>
+			<ModalWritePost isOpen={isOpen} onClose={onClose} />
+			<InputGroup>
+				<InputLeftElement children={<BsPencil />} />
+				<Input variant="outline" onClick={openModalWritePost} placeholder="Start writing" />
+			</InputGroup>
+		</>
 	);
 });

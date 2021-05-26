@@ -1,7 +1,7 @@
 import { ButtonGroup, Button } from '@chakra-ui/button';
 
 import { Input } from '@chakra-ui/input';
-import { Stack } from '@chakra-ui/layout';
+import { Stack, Text } from '@chakra-ui/layout';
 
 import {
 	Modal,
@@ -12,22 +12,42 @@ import {
 	ModalHeader,
 	ModalOverlay
 } from '@chakra-ui/modal';
-import { chakra } from '@chakra-ui/system';
-import React, { useContext } from 'react';
+import { chakra, position } from '@chakra-ui/system';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useState } from 'reinspect';
-import { GET_AUTH, SUBMIT_AUTH } from '$/actions';
-import { AppContext } from '$/context';
+import { GET_AUTH, SUBMIT_AUTH } from '@/actions';
+import { AppContext } from '@/context';
+import { useToast } from '@chakra-ui/toast';
+import { MODAL_LOGIN } from './constants';
 
-const LoginModalContent = ({ switchSignup }) => {
+const LoginModalContent = ({ switchSignup, onModalClose }) => {
 	const { dispatch } = useContext(AppContext);
 	const { handleSubmit, register } = useForm();
-	const onSubmit = (data) => {
-		dispatch(GET_AUTH(data));
+	const toast = useToast();
+	const onSubmit = async (data) => {
+		try {
+			await dispatch(GET_AUTH(data));
+			toast({
+				title: 'Authentication',
+				description: 'Login success',
+				status: 'success',
+				position: 'top'
+			});
+			onModalClose();
+		} catch (e) {
+			toast({
+				title: 'Authentication',
+				description: 'Please check your username/password',
+				status: 'warning',
+				position: 'top'
+			});
+		}
 	};
 	return (
 		<>
-			<ModalHeader>Login</ModalHeader>
+			<ModalHeader>
+				<Text fontSize="2xl">Login</Text>
+			</ModalHeader>
 			<ModalBody>
 				<chakra.form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={3} alignItems="flex-start">
@@ -43,7 +63,7 @@ const LoginModalContent = ({ switchSignup }) => {
 						/>
 						<Input type="submit" hidden />
 
-						<Button size="sm" mt={3} variant="link" onClick={switchSignup}>
+						<Button size="sm" mt={5} variant="link" onClick={switchSignup}>
 							Haven't got an account?
 						</Button>
 					</Stack>
@@ -58,13 +78,31 @@ const LoginModalContent = ({ switchSignup }) => {
 	);
 };
 
-const SignupModalContent = () => {
+const SignupModalContent = ({ onModalClose }) => {
 	const { dispatch } = useContext(AppContext);
+
+	const toast = useToast();
 
 	const { handleSubmit, register } = useForm();
 
-	const onSubmit = (data) => {
-		dispatch(SUBMIT_AUTH(data));
+	const onSubmit = async (data) => {
+		try {
+			await dispatch(SUBMIT_AUTH(data));
+			toast({
+				title: 'Authentication',
+				description: 'Login Success',
+				status: 'success',
+				position: 'top'
+			});
+			onModalClose();
+		} catch (e) {
+			toast({
+				title: 'Authentication',
+				description: 'There are some problems. We are fixing it',
+				status: 'error',
+				position: 'top'
+			});
+		}
 	};
 	return (
 		<>
@@ -89,7 +127,7 @@ const SignupModalContent = () => {
 
 			<ModalFooter>
 				<ButtonGroup>
-					<Button variant="solid" onClick={handleSubmit(onSubmit)}>
+					<Button variant="solid" colorScheme="blue" onClick={handleSubmit(onSubmit)}>
 						Create Account
 					</Button>
 				</ButtonGroup>
@@ -101,24 +139,27 @@ const SignupModalContent = () => {
 export default function ModalLogin({ isOpen, onClose }) {
 	const [isCreateAccount, setIsCreateAccount] = useState(false);
 
+	const { state } = useContext(AppContext);
+
 	const onModalClose = () => {
 		setIsCreateAccount(false);
 		onClose();
 	};
 
 	return (
-		<Modal isOpen={isOpen} isCentered onClose={onModalClose} motionPreset="scale">
+		<Modal isOpen={isOpen} onClose={onModalClose} size="xl" motionPreset="scale">
 			<ModalOverlay />
 			<ModalContent>
 				<ModalCloseButton />
 				{!isCreateAccount ? (
 					<LoginModalContent
+						onModalClose={onModalClose}
 						switchSignup={() => {
 							setIsCreateAccount(true);
 						}}
 					/>
 				) : (
-					<SignupModalContent />
+					<SignupModalContent onModalClose={onModalClose} />
 				)}
 			</ModalContent>
 		</Modal>

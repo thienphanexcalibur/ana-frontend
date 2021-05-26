@@ -4,8 +4,8 @@ import { Box, HStack, Stack, Text } from '@chakra-ui/layout';
 import { chakra } from '@chakra-ui/system';
 import React, { memo, useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { ADD_COMMENT } from '$/actions';
-import { AppContext } from '$/context';
+import { ADD_COMMENT } from '@/actions';
+import { AppContext } from '@/context';
 
 export default memo(({ postId, onCommentCreated }) => {
 	const { state, dispatch } = useContext(AppContext);

@@ -1,6 +1,11 @@
-import React, { createContext, useCallback } from 'react';
-import { useReducer } from 'reinspect';
-import { createAction } from '$/actions';
+import React, { createContext, useCallback, useReducer as ReactUseReducer } from 'react';
+import { createAction } from '@/actions';
+
+import { useReducer as DebugUseReducer } from 'reinspect';
+
+const debug = process.env.NODE_ENV === 'development';
+
+const useReducer = debug ? DebugUseReducer : ReactUseReducer;
 
 function reducer(state, action) {
 	const { type, payload } = action;
@@ -9,10 +14,16 @@ function reducer(state, action) {
 			return { ...state, auth: payload };
 		case 'SUBMIT_AUTH':
 			return { ...state, auth: payload };
-		case 'GET_WALL_POSTS':
-			return { ...state, posts: payload };
 		case 'LOGOUT':
 			return { ...state, auth: {} };
+		case 'TOGGLE_MODAL':
+			return {
+				...state,
+				modals: {
+					...state.modals,
+					[payload.type]: payload.value
+				}
+			};
 		default:
 			return state;
 	}
@@ -20,7 +31,7 @@ function reducer(state, action) {
 
 const initialState = {
 	auth: {},
-	posts: []
+	modals: {}
 };
 
 export const AppContext = createContext({});
@@ -43,10 +54,13 @@ const Provider = ({ children }) => {
 							return x;
 						})
 						.catch((e) => {
-							dispatch(createAction(`${action.name}/ERROR`, { error: e.message }));
+							dispatch(
+								createAction(`${action.name}/ERROR`, { message: e.message, stack: e.stack })
+							);
+							throw e;
 						});
 				}
-				if (Object.prototype.toString.call(thunkResult) === '[object Function]') {
+				if (Object.prototype.toString.call(thunkResult) === '[object Object]') {
 					const actionWithPayload = createAction(action.name, thunkResult);
 					dispatch(actionWithPayload);
 					return actionWithPayload;

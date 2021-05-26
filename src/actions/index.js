@@ -5,10 +5,11 @@ export function createAction(name, payload) {
 	};
 }
 
-function createActionThunk(name, fn) {
+function createThunk(name, fn) {
 	return (...args) => {
 		const thunk = fn.bind(null, ...args);
 		Object.defineProperty(thunk, 'name', {
+			configurable: false,
 			writable: true,
 			value: name
 		});
@@ -21,7 +22,12 @@ const API = (...args) => {
 	return `${process.env.API_PATH}${path.raw.join('')}${rest.join('')}`;
 };
 
-export const GET_AUTH = createActionThunk('GET_AUTH', async ({ username, password }) => {
+export const TOGGLE_MODAL = createThunk('TOGGLE_MODAL', ({ type, value }) => ({
+	type,
+	value
+}));
+
+export const GET_AUTH = createThunk('GET_AUTH', async ({ username, password }) => {
 	const payload = username && password ? { username, password } : null;
 
 	const requestOptions = {
@@ -33,12 +39,12 @@ export const GET_AUTH = createActionThunk('GET_AUTH', async ({ username, passwor
 		...(payload ? { body: JSON.stringify(payload) } : {})
 	};
 
-	return fetch(API`/auth`, requestOptions).then((res) => res.json());
+	return fetch(API`/user/auth`, requestOptions).then((res) => res.json());
 });
 
-export const SUBMIT_AUTH = createActionThunk('SUBMIT_AUTH', async ({ username, password }) => {
+export const SUBMIT_AUTH = createThunk('SUBMIT_AUTH', async ({ username, password }) => {
 	try {
-		const result = await fetch(API`/auth/signup`, {
+		const result = await fetch(API`/user/auth/signup`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -56,24 +62,24 @@ export const SUBMIT_AUTH = createActionThunk('SUBMIT_AUTH', async ({ username, p
 	return { username, password };
 });
 
-export const LOGOUT = createActionThunk('LOGOUT', () =>
-	fetch(API`/auth/logout`, {
+export const LOGOUT = createThunk('LOGOUT', () =>
+	fetch(API`/user/auth/logout`, {
 		method: 'POST',
 		credentials: 'include'
 	})
 );
 
-export const GET_WALL_POSTS = createActionThunk('GET_WALL_POSTS', () =>
+export const GET_WALL_POSTS = createThunk('GET_WALL_POSTS', () =>
 	fetch(API`/posts`).then((res) => res.json())
 );
 
-export const GET_POST = createActionThunk('GET_POST', (id) =>
+export const GET_POST = createThunk('GET_POST', (id) =>
 	fetch(API`/post/${id}`, {
 		credentials: 'include'
 	}).then((res) => res.json())
 );
 
-export const ADD_POST = createActionThunk('ADD_POST', ({ title, content, byUser }, { dispatch }) =>
+export const ADD_POST = createThunk('ADD_POST', ({ title, content, byUser }, { dispatch }) =>
 	fetch(API`/post/add`, {
 		method: 'POST',
 		headers: {
@@ -90,7 +96,7 @@ export const ADD_POST = createActionThunk('ADD_POST', ({ title, content, byUser 
 		.then(() => dispatch(GET_WALL_POSTS()))
 );
 
-export const ADD_COMMENT = createActionThunk('ADD_COMMENT', ({ comment, byUser, post }) =>
+export const ADD_COMMENT = createThunk('ADD_COMMENT', ({ comment, byUser, post }) =>
 	fetch(API`/comment/add`, {
 		method: 'POST',
 		headers: {
@@ -105,6 +111,21 @@ export const ADD_COMMENT = createActionThunk('ADD_COMMENT', ({ comment, byUser, 
 	}).then((res) => res.json())
 );
 
-export const GET_COMMENTS = createActionThunk('GET_COMMENTS', (postId) =>
+export const GET_COMMENTS = createThunk('GET_COMMENTS', (postId) =>
 	fetch(API`/comment/post/${postId}`).then((res) => res.json())
+);
+
+export const INTERACT = createThunk('INTERACT', ({ id: postId, liked, disliked }) =>
+	fetch(API`/post/interact`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			postId,
+			liked,
+			disliked
+		})
+	}).then((res) => res.json())
 );

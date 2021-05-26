@@ -1,14 +1,24 @@
 import { Avatar } from '@chakra-ui/avatar';
-import { Box, Text } from '@chakra-ui/layout';
+import { Box, Flex, Text, VStack } from '@chakra-ui/layout';
 import React, { memo } from 'react';
 import ErrorBoundary from './ErrorBoundary';
+import Interactions from './Interactions';
 
 export default memo(({ data }) => (
 	<ErrorBoundary>
-		<Box border="1px" borderColor="gray.200">
-			<Avatar name={data.byUser.username} size="sm" />
-			<Text>{data.byUser.username}</Text>
+		<VStack alignItems="flex-start">
+			<Flex>
+				<Avatar name={data.byUser.username} size="xs" mr={3} />
+				<Text fontWeight="semibold">{data.byUser.username}</Text>
+			</Flex>
 			<Text>{data.comment}</Text>
-		</Box>
+
+			<Interactions
+				data={{
+					liked: data.liked,
+					disliked: data.disliked
+				}}
+			/>
+		</VStack>
 	</ErrorBoundary>
 ));

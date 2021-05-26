@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { StateInspector } from 'reinspect';
 import Provider from './context';
 import Main from './Main';
+import { hot } from 'react-hot-loader/root';
 
 const DebugWrapper = ({ children }) =>
 	process.env.NODE_ENV === 'production' ? (
@@ -12,7 +13,7 @@ const DebugWrapper = ({ children }) =>
 		<StateInspector name="App">{children}</StateInspector>
 	);
 
-const App = () => (
+const App = hot(() => (
 	<ChakraProvider>
 		<DebugWrapper>
 			<Provider>
@@ -20,6 +21,6 @@ const App = () => (
 			</Provider>
 		</DebugWrapper>
 	</ChakraProvider>
-);
+));
 
 render(<App />, document.querySelector('#root'));
