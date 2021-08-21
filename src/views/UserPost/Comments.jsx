@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/layout';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import Comment from '@/components/Comment';
 
 export default memo(({ comments }) => (

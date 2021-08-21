@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Box, Spinner, Stack } from '@chakra-ui/react';
 import { AppContext } from '@/context';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -16,7 +16,7 @@ const Wall = () => {
 
 	const getWallPosts = async () => {
 		const postsResult = await dispatch(GET_WALL_POSTS());
-		setPosts(postsResult);
+		setPosts(postsResult.data);
 		setLoading(false);
 	};
 

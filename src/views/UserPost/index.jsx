@@ -1,13 +1,11 @@
-import { Box, Divider, Heading, Stack, Text } from '@chakra-ui/layout';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Heading, Stack, Text } from '@chakra-ui/layout';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { GET_COMMENTS, GET_POST } from '@/actions';
 import { AppContext } from '@/context';
 import BreadCrumb from './BreadCrumb';
 import Comments from './Comments';
 import CreateCommentArea from './CreateCommentArea';
-import { AiFillLike } from 'react-icons/ai';
-import { Suspense } from 'react';
 
 const UserPost = () => {
 	const history = useHistory();

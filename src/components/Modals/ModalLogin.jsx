@@ -13,7 +13,7 @@ import {
 	ModalOverlay
 } from '@chakra-ui/modal';
 import { chakra, position } from '@chakra-ui/system';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GET_AUTH, SUBMIT_AUTH } from '@/actions';
 import { AppContext } from '@/context';
@@ -24,20 +24,29 @@ const LoginModalContent = ({ switchSignup, onModalClose }) => {
 	const { dispatch } = useContext(AppContext);
 	const { handleSubmit, register } = useForm();
 	const toast = useToast();
-	const onSubmit = async (data) => {
+	const onSubmit = async (payload) => {
 		try {
-			await dispatch(GET_AUTH(data));
-			toast({
-				title: 'Authentication',
-				description: 'Login success',
-				status: 'success',
-				position: 'top'
-			});
-			onModalClose();
+			const { data } = await dispatch(GET_AUTH(payload));
+			if (data) {
+				toast({
+					title: 'Authentication',
+					description: 'Login success',
+					status: 'success',
+					position: 'top'
+				});
+				onModalClose();
+			} else {
+				toast({
+					title: 'Authentication',
+					description: 'Please check your username/password',
+					status: 'warning',
+					position: 'top'
+				});
+			}
 		} catch (e) {
 			toast({
 				title: 'Authentication',
-				description: 'Please check your username/password',
+				description: 'Server Error',
 				status: 'warning',
 				position: 'top'
 			});

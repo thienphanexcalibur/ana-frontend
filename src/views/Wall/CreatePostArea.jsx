@@ -1,12 +1,12 @@
-import React, { memo, useContext } from 'react';
+import { memo, useContext } from 'react';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
 import { BsPencil } from 'react-icons/bs';
 import { useDisclosure } from '@chakra-ui/hooks';
 import isEmpty from 'lodash/isEmpty';
-import ModalWritePost from './ModalWritePost';
 import { AppContext } from '@/context';
 import { TOGGLE_MODAL } from '@/actions';
 import { MODAL_LOGIN } from '@/components/Modals/constants';
+import ModalWritePost from './ModalWritePost';
 
 export default memo(() => {
 	const { isOpen, onClose, onOpen } = useDisclosure();

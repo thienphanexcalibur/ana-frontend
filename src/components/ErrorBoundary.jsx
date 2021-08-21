@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/layout';
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 export default class ErrorBoundary extends Component {
 	constructor(props) {

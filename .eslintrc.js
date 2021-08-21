@@ -30,8 +30,6 @@ module.exports = {
 		'no-use-before-define': [0],
 		'no-undef': 0,
 		'no-tabs': 0,
-		'no-console': 0,
-		'@typescript-eslint/no-unsafe-assignment': 0,
 		'react/jsx-indent': ['error', 'tab'],
 		'react/jsx-indent-props': ['error', 'tab'],
 		'react/no-children-prop': 0,

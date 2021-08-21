@@ -1,19 +1,22 @@
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Text, VStack } from '@chakra-ui/layout';
-import React, { memo, useCallback, useContext } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import throttle from 'lodash/throttle';
 import isEmpty from 'lodash/isEmpty';
-import Interactions from './Interactions';
 
 import { AppContext } from '@/context';
 import { INTERACT, TOGGLE_MODAL } from '@/actions';
+import Interactions from './Interactions';
 import { MODAL_LOGIN } from './Modals/constants';
+import { Image } from '@chakra-ui/react';
 
 // Sample card from Airbnb
 
-export default memo(({ title, content, liked, disliked, _id }) => {
+const { STATIC_PATH } = process.env;
+
+export default memo(({ title, content, liked, disliked, thumbnail, _id }) => {
 	const { state, dispatch } = useContext(AppContext);
 	const history = useHistory();
 
@@ -57,6 +60,7 @@ export default memo(({ title, content, liked, disliked, _id }) => {
 			p={5}
 			onClick={goToPostDetails}
 		>
+			<Image src={`${STATIC_PATH}${thumbnail}`} />
 			<Text noOfLines={3} fontWeight="semibold" fontSize="xl" lineHeight="tall">
 				{title}
 			</Text>

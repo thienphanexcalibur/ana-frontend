@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '@/context';
-import ModalLogin from './ModalLogin';
 import { TOGGLE_MODAL } from '@/actions';
+import ModalLogin from './ModalLogin';
 import { MODAL_LOGIN } from './constants';
 
 export default () => {

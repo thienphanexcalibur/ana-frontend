@@ -1,10 +1,12 @@
 import { Box, Button, Stack, StackItem, AvatarGroup, Avatar, Text } from '@chakra-ui/react';
-import React, { memo, useCallback, useContext } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import { GET_WALL_POSTS, LOGOUT, TOGGLE_MODAL } from '@/actions';
 import { AppContext } from '@/context';
 import { MODAL_LOGIN } from '@/components/Modals/constants';
+
+const { STATIC_PATH } = process.env;
 
 const AuthActions = () => {
 	const { state, dispatch } = useContext(AppContext);
@@ -24,7 +26,7 @@ const AuthActions = () => {
 
 	return (
 		<Box>
-			{isEmpty(state.auth) ? (
+			{isEmpty(state.auth.data) ? (
 				<Button
 					onClick={openModalLogin}
 					size="md"
@@ -52,9 +54,9 @@ export default memo(() => {
 		<Stack direction="column" spacing={10} w={400} position="sticky" top={0}>
 			<StackItem direction="column">
 				<AvatarGroup spacing={5}>
-					<Avatar name={state.auth?.username} />
+					<Avatar src={`${STATIC_PATH}${state.auth?.data?.avatar}`} />
 					<Text fontSize="sm" as="h3">
-						{state.auth?.username}
+						{state.auth?.data?.username}
 					</Text>
 				</AvatarGroup>
 			</StackItem>

@@ -1,6 +1,6 @@
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Box, Heading, Text } from '@chakra-ui/layout';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 export default memo(() => (
 	<Box>

@@ -1,5 +1,5 @@
-import { Box, Container, Flex, HStack } from '@chakra-ui/layout';
-import React, { useContext, useEffect } from 'react';
+import { HStack } from '@chakra-ui/layout';
+import { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { GET_AUTH } from './actions';
 import Modals from './components/Modals';

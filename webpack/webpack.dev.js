@@ -7,6 +7,10 @@ const Dotenv = require('dotenv-webpack');
 module.exports = merge(base, {
 	mode: 'development',
 	devtool: 'eval-source-map',
+	entry: {
+		hot: 'react-hot-loader/patch',
+		main: path.resolve(__dirname, '../src/entry.jsx')
+	},
 	output: {
 		filename: '[name].js'
 	},

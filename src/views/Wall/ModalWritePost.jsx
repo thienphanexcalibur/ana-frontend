@@ -12,7 +12,7 @@ import {
 	chakra,
 	Textarea
 } from '@chakra-ui/react';
-import React, { memo, useContext } from 'react';
+import { memo, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { AppContext } from '@/context';

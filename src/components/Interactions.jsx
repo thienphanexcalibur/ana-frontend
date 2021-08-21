@@ -1,8 +1,6 @@
-import { HStack, Box, IconButton, Text, Icon, Button } from '@chakra-ui/react';
-import React, { memo, useCallback, useContext, useEffect, useState } from 'react';
+import { HStack, Box, Button } from '@chakra-ui/react';
+import { useCallback, useEffect, useState } from 'react';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
-import throttle from 'lodash/throttle';
-import { AppContext } from '@/context';
 
 export default ({ data = {}, onLikeDislikeClick }) => {
 	const [liked, setLiked] = useState(0);

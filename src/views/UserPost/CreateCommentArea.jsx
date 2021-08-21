@@ -2,7 +2,7 @@ import { Avatar } from '@chakra-ui/avatar';
 import { Input } from '@chakra-ui/input';
 import { Box, HStack, Stack, Text } from '@chakra-ui/layout';
 import { chakra } from '@chakra-ui/system';
-import React, { memo, useContext, useRef } from 'react';
+import { memo, useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { ADD_COMMENT } from '@/actions';
 import { AppContext } from '@/context';
